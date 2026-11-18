@@ -1,0 +1,1453 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes" />
+    <title>💖 Menu · Forever</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Great+Vibes&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+
+    <!-- Font Awesome 6 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+
+    <!-- Tailwind via CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <style>
+        @layer utilities {
+            .font-script {
+                font-family: 'Dancing Script', cursive, sans-serif;
+            }
+            .font-romantic {
+                font-family: 'Playfair Display', Georgia, serif;
+            }
+            .font-vibes {
+                font-family: 'Great Vibes', cursive, sans-serif;
+            }
+            .font-sans {
+                font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+            }
+        }
+
+        @keyframes float-heart {
+            0% {
+                transform: translateY(0) scale(0.8) rotate(0deg);
+                opacity: 0;
+            }
+            20% {
+                opacity: 0.7;
+            }
+            80% {
+                opacity: 0.7;
+            }
+            100% {
+                transform: translateY(-120vh) scale(1.2) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        @keyframes pulse-slow {
+            0%,
+            100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.06);
+            }
+        }
+
+        @keyframes spin-slow {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes glow {
+            0%,
+            100% {
+                box-shadow: 0 0 20px rgba(210, 54, 105, 0.1);
+            }
+            50% {
+                box-shadow: 0 0 40px rgba(210, 54, 105, 0.25);
+            }
+        }
+
+        @keyframes float {
+            0%,
+            100% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        @keyframes heartbeat {
+            0%,
+            100% {
+                transform: scale(1);
+            }
+            25% {
+                transform: scale(1.1);
+            }
+            50% {
+                transform: scale(1);
+            }
+            75% {
+                transform: scale(1.1);
+            }
+        }
+
+        @keyframes giftOpen {
+            0% {
+                transform: scale(0) rotate(-10deg);
+                opacity: 0;
+            }
+            60% {
+                transform: scale(1.05) rotate(2deg);
+                opacity: 1;
+            }
+            100% {
+                transform: scale(1) rotate(0deg);
+                opacity: 1;
+            }
+        }
+
+        .animate-float-heart {
+            animation: float-heart linear infinite;
+        }
+        .animate-pulse-slow {
+            animation: pulse-slow 3s ease-in-out infinite;
+        }
+        .animate-spin-slow {
+            animation: spin-slow 6s linear infinite;
+        }
+        .animate-fade-up {
+            animation: fadeInUp 0.6s ease forwards;
+        }
+        .animate-glow {
+            animation: glow 3s ease-in-out infinite;
+        }
+        .animate-float {
+            animation: float 3s ease-in-out infinite;
+        }
+        .animate-heartbeat {
+            animation: heartbeat 1.5s ease-in-out infinite;
+        }
+        .animate-gift-open {
+            animation: giftOpen 0.8s ease forwards;
+        }
+
+        ::-webkit-scrollbar {
+            width: 4px;
+            height: 4px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #FFF9F5;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #D23669;
+            border-radius: 9999px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #b02452;
+        }
+
+        * {
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background: #FFF9F5;
+            color: #4A2040;
+            font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+            min-height: 100vh;
+            overflow-x: hidden;
+            margin: 0;
+            padding: 0;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        #hearts-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 9999;
+            overflow: hidden;
+        }
+
+        .floating-heart {
+            position: absolute;
+            bottom: -20px;
+            font-size: 1.2rem;
+            animation: float-heart linear infinite;
+            opacity: 0;
+        }
+
+        .mood-card {
+            transition: all 0.3s ease;
+            border-radius: 20px;
+            padding: 14px 12px;
+            border: 1px solid rgba(210, 54, 105, 0.12);
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+            min-height: 70px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .mood-card:active {
+            transform: scale(0.96);
+        }
+        .mood-card.active {
+            border-color: #D23669;
+            box-shadow: 0 8px 24px rgba(210, 54, 105, 0.15);
+        }
+        .mood-card .mood-emoji {
+            font-size: 1.6rem;
+        }
+        .mood-card .mood-label {
+            font-weight: 600;
+            font-size: 0.8rem;
+            color: #4A2040;
+        }
+
+        .quote-box {
+            min-height: 140px;
+            transition: all 0.4s ease;
+            border-radius: 28px;
+            padding: 20px 16px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .quote-box.animate {
+            animation: pulse-slow 0.6s ease;
+        }
+        .quote-box .quote-text {
+            font-family: 'Playfair Display', Georgia, serif;
+            font-style: italic;
+            font-size: 0.95rem;
+            line-height: 1.7;
+            color: #3e1a2b;
+        }
+        .quote-box .sub-quote {
+            font-size: 0.85rem;
+            color: #a3475e;
+            margin-top: 8px;
+            font-weight: 400;
+        }
+        .quote-box .special-action {
+            font-size: 0.75rem;
+            color: #D23669;
+            margin-top: 6px;
+            font-weight: 500;
+            background: rgba(210, 54, 105, 0.08);
+            padding: 4px 12px;
+            border-radius: 30px;
+            display: inline-block;
+        }
+
+        .btn-accept {
+            background: #D23669;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 40px;
+            color: white;
+            font-weight: 600;
+            font-size: 0.85rem;
+            box-shadow: 0 6px 14px rgba(210, 54, 105, 0.4);
+            transition: 0.15s;
+            cursor: pointer;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .btn-accept:active {
+            transform: scale(0.92);
+        }
+
+        .btn-not {
+            background: #b0b0b0;
+            border: none;
+            padding: 10px 16px;
+            border-radius: 40px;
+            color: white;
+            font-weight: 500;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: 0.1s;
+            position: relative;
+            white-space: nowrap;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .btn-not.flee {
+            transition: 0.08s linear;
+        }
+
+        .secret-heart {
+            background: none;
+            border: none;
+            font-size: 1.6rem;
+            color: #D23669;
+            transition: 0.25s;
+            cursor: pointer;
+            background: rgba(255, 255, 255, 0.4);
+            width: 46px;
+            height: 46px;
+            border-radius: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 12px rgba(210, 54, 105, 0.12);
+            -webkit-tap-highlight-color: transparent;
+        }
+        .secret-heart:active {
+            transform: scale(0.85);
+            background: #f06292;
+            color: white;
+        }
+        .secret-heart.pulse {
+            animation: pulse-slow 0.5s ease 2;
+        }
+
+        .memory-card {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(4px);
+            border-radius: 18px;
+            padding: 14px;
+            border: 1px solid rgba(210, 54, 105, 0.10);
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+            -webkit-tap-highlight-color: transparent;
+        }
+        .memory-card:active {
+            transform: scale(0.97);
+        }
+        .memory-card .memory-icon {
+            font-size: 2rem;
+            display: block;
+            margin-bottom: 4px;
+        }
+        .memory-card .memory-title {
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: #4A2040;
+        }
+        .memory-card .memory-caption {
+            font-size: 0.8rem;
+            color: #666;
+            margin-top: 4px;
+            line-height: 1.4;
+        }
+        .memory-card .memory-sticker {
+            font-size: 0.7rem;
+            color: #D23669;
+            font-weight: 500;
+            background: rgba(210, 54, 105, 0.08);
+            padding: 2px 10px;
+            border-radius: 20px;
+            display: inline-block;
+            margin-top: 4px;
+        }
+
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(74, 32, 64, 0.6);
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
+            z-index: 10000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+            animation: fadeIn 0.5s ease;
+        }
+        .modal-overlay.hidden {
+            display: none;
+        }
+        .modal-card {
+            background: white;
+            border-radius: 40px;
+            padding: 32px 24px;
+            max-width: 400px;
+            width: 100%;
+            text-align: center;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.2);
+            animation: scaleIn 0.5s ease;
+        }
+
+        .gift-modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(74, 32, 64, 0.7);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            z-index: 20000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+            animation: fadeIn 0.5s ease;
+        }
+        .gift-modal-overlay.show {
+            display: flex;
+        }
+        .gift-modal-card {
+            background: linear-gradient(145deg, #fff5f8, #ffffff);
+            border-radius: 40px;
+            padding: 36px 24px;
+            max-width: 420px;
+            width: 100%;
+            text-align: center;
+            box-shadow: 0 40px 80px rgba(210, 54, 105, 0.3);
+            animation: giftOpen 0.8s ease forwards;
+            border: 2px solid rgba(210, 54, 105, 0.15);
+            position: relative;
+            overflow: hidden;
+        }
+        .gift-modal-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(210, 54, 105, 0.05) 0%, transparent 70%);
+            animation: spin-slow 20s linear infinite;
+            pointer-events: none;
+        }
+        .gift-modal-card .gift-emoji {
+            font-size: 4rem;
+            display: block;
+            margin-bottom: 8px;
+            animation: float 3s ease-in-out infinite;
+        }
+        .gift-modal-card .gift-title {
+            font-family: 'Dancing Script', cursive;
+            font-size: 2.2rem;
+            color: #D23669;
+            margin-bottom: 6px;
+            position: relative;
+            z-index: 1;
+        }
+        .gift-modal-card .gift-message {
+            font-family: 'Playfair Display', Georgia, serif;
+            font-style: italic;
+            font-size: 0.95rem;
+            line-height: 1.7;
+            color: #4A2040;
+            padding: 10px 0;
+            position: relative;
+            z-index: 1;
+        }
+        .gift-modal-card .gift-message .highlight {
+            color: #D23669;
+            font-weight: 600;
+        }
+        .gift-modal-card .gift-flowers {
+            font-size: 2rem;
+            letter-spacing: 6px;
+            margin: 8px 0;
+            position: relative;
+            z-index: 1;
+        }
+        .gift-modal-card .gift-hearts {
+            font-size: 1.6rem;
+            letter-spacing: 4px;
+            margin: 6px 0;
+            position: relative;
+            z-index: 1;
+            animation: heartbeat 1.5s ease-in-out infinite;
+        }
+        .gift-modal-card .btn-close-gift {
+            margin-top: 16px;
+            background: #D23669;
+            border: none;
+            padding: 10px 28px;
+            border-radius: 40px;
+            color: white;
+            font-weight: 600;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: 0.2s;
+            box-shadow: 0 6px 20px rgba(210, 54, 105, 0.3);
+            position: relative;
+            z-index: 1;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .gift-modal-card .btn-close-gift:active {
+            transform: scale(0.95);
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+        @keyframes scaleIn {
+            from {
+                transform: scale(0.9);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .music-player {
+            position: fixed;
+            bottom: 16px;
+            right: 16px;
+            z-index: 50;
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border-radius: 60px;
+            padding: 6px 14px 6px 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+            border: 1px solid rgba(210, 54, 105, 0.15);
+        }
+        .music-player button {
+            background: #D23669;
+            border: none;
+            color: white;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: 0.2s;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .music-player button:active {
+            transform: scale(0.9);
+        }
+        .music-player .status {
+            font-size: 0.65rem;
+            font-weight: 500;
+            color: #4A2040;
+        }
+
+        .letter-content {
+            background: rgba(255, 255, 255, 0.7);
+            padding: 16px 18px;
+            border-radius: 20px;
+            border-left: 4px solid #D23669;
+            font-size: 0.9rem;
+            line-height: 1.7;
+            color: #1e0e14;
+        }
+
+        .reason-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+            padding: 6px 0;
+            border-bottom: 1px solid rgba(210, 54, 105, 0.06);
+        }
+        .reason-item:last-child {
+            border-bottom: none;
+        }
+        .reason-item .reason-icon {
+            color: #D23669;
+            font-size: 0.9rem;
+            margin-top: 2px;
+        }
+        .reason-item .reason-text {
+            font-size: 0.85rem;
+            color: #4A2040;
+            line-height: 1.4;
+        }
+
+        .persuasion-text {
+            font-family: 'Playfair Display', Georgia, serif;
+            font-style: italic;
+            font-size: 0.95rem;
+            line-height: 1.8;
+            color: #4A2040;
+            padding: 14px 16px;
+            background: rgba(255, 240, 245, 0.5);
+            border-radius: 20px;
+            border: 1px dashed #D23669;
+            text-align: center;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        .persuasion-text .highlight {
+            color: #D23669;
+            font-weight: 600;
+        }
+
+        header .header-title {
+            font-size: 1.1rem;
+        }
+
+        #bgMusic {
+            display: none;
+        }
+
+        @media (max-width: 480px) {
+            .modal-card {
+                padding: 24px 16px;
+                border-radius: 32px;
+            }
+            .gift-modal-card {
+                padding: 28px 16px;
+                border-radius: 32px;
+            }
+            .gift-modal-card .gift-title {
+                font-size: 1.8rem;
+            }
+            .gift-modal-card .gift-message {
+                font-size: 0.85rem;
+            }
+            .gift-modal-card .gift-emoji {
+                font-size: 3rem;
+            }
+            .gift-modal-card .gift-flowers {
+                font-size: 1.6rem;
+            }
+            .gift-modal-card .gift-hearts {
+                font-size: 1.3rem;
+            }
+            .music-player {
+                bottom: 12px;
+                right: 12px;
+                padding: 4px 10px 4px 8px;
+            }
+            .music-player button {
+                width: 28px;
+                height: 28px;
+            }
+            .music-player .status {
+                font-size: 0.55rem;
+            }
+            .quote-box {
+                min-height: 120px;
+                padding: 16px 12px;
+                border-radius: 24px;
+            }
+            .quote-box .quote-text {
+                font-size: 0.85rem;
+                line-height: 1.6;
+            }
+            .quote-box .sub-quote {
+                font-size: 0.75rem;
+            }
+            .quote-box .special-action {
+                font-size: 0.65rem;
+            }
+            .mood-card {
+                padding: 10px 8px;
+                min-height: 60px;
+                border-radius: 16px;
+            }
+            .mood-card .mood-emoji {
+                font-size: 1.3rem;
+            }
+            .mood-card .mood-label {
+                font-size: 0.7rem;
+            }
+            .persuasion-text {
+                font-size: 0.85rem;
+                padding: 12px 14px;
+            }
+            .secret-heart {
+                width: 40px;
+                height: 40px;
+                font-size: 1.3rem;
+            }
+            .btn-accept {
+                padding: 8px 16px;
+                font-size: 0.75rem;
+            }
+            .btn-not {
+                padding: 8px 14px;
+                font-size: 0.7rem;
+            }
+            .letter-content {
+                font-size: 0.8rem;
+                padding: 14px 14px;
+            }
+            .memory-card {
+                padding: 12px;
+            }
+            .memory-card .memory-icon {
+                font-size: 1.6rem;
+            }
+            .memory-card .memory-title {
+                font-size: 0.8rem;
+            }
+            .memory-card .memory-caption {
+                font-size: 0.7rem;
+            }
+            header .header-title {
+                font-size: 0.95rem;
+            }
+            .gift-modal-card .btn-close-gift {
+                padding: 8px 20px;
+                font-size: 0.75rem;
+            }
+        }
+
+        @media (max-width: 380px) {
+            .mood-card .mood-label {
+                font-size: 0.6rem;
+            }
+            .mood-card .mood-emoji {
+                font-size: 1.1rem;
+            }
+            .quote-box .quote-text {
+                font-size: 0.75rem;
+            }
+            .gift-modal-card .gift-title {
+                font-size: 1.5rem;
+            }
+            .gift-modal-card .gift-message {
+                font-size: 0.75rem;
+            }
+        }
+
+        @supports (padding: max(0px)) {
+            .music-player {
+                bottom: max(16px, env(safe-area-inset-bottom));
+                right: max(16px, env(safe-area-inset-right));
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- === HIDDEN AUDIO PLAYER - Background Music === -->
+    <!-- 
+        🔴 IMPORTANT: 
+        1. Apni downloaded song ko 'song.mp3' naam dein
+        2. Isko usi folder mein rakhein jahan index.html hai
+    -->
+    <audio id="bgMusic" loop preload="auto">
+        <source src="song.mp3.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- === FLOATING HEARTS === -->
+    <div id="hearts-container"></div>
+
+    <!-- === WELCOME MODAL === -->
+    <div class="modal-overlay" id="welcomeModal">
+        <div class="modal-card">
+            <div class="text-5xl mb-3">💖</div>
+            <h2 class="font-vibes text-2xl text-[#4A2040]">Menu ❤️</h2>
+            <p class="text-[#4A2040]/70 mt-2 font-romantic text-base">
+                A little something made just for you...
+            </p>
+            <div class="mt-4 space-y-2">
+                <p class="text-sm text-[#4A2040]/60">✨ From Shan with all his heart</p>
+                <p class="text-sm text-[#4A2040]/60">🎵 A special melody for you</p>
+                <p class="text-sm text-[#4A2040]/60">💕 Because you deserve all the love</p>
+            </div>
+            <button onclick="closeWelcome()" class="btn-accept mt-5 px-6">
+                Open with Love ❤️
+            </button>
+        </div>
+    </div>
+
+    <!-- === SURPRISE GIFT MODAL === -->
+    <div class="gift-modal-overlay" id="giftModal">
+        <div class="gift-modal-card">
+            <span class="gift-emoji">🎁</span>
+            <div class="gift-title">A Surprise For You! 💝</div>
+            <div class="gift-flowers">🌹 🌷 🌸 🌺 🌹</div>
+            <div class="gift-message">
+                "Menu, you are the best thing that ever happened to me! 🌍<br>
+                <span class="highlight">Tum mere ho, aur main tumhara hoon.</span><br><br>
+                Yeh sirf ek gift nahi hai, yeh <span class="highlight">meri taraf se ek choti si mohabbat</span> hai.<br>
+                <span class="highlight">Main tumse wada karta hoon</span> — har din tumhe khush rakhunga,<br>
+                har pal tumhari qadar karunga, aur hamesha tumhara saath dunga. 💕"
+            </div>
+            <div class="gift-hearts">❤️ 💖 💕 💗 💓 ❤️</div>
+            <button class="btn-close-gift" onclick="closeGiftModal()">
+                <i class="fas fa-heart"></i> Thank You, My Love! <i class="fas fa-heart"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- === MUSIC PLAYER CONTROL === -->
+    <div class="music-player" id="musicPlayer">
+        <button onclick="toggleMusic()" id="musicBtn">
+            <i class="fas fa-volume-up" id="musicIcon"></i>
+        </button>
+        <span class="status" id="musicStatus">Playing ♪</span>
+    </div>
+
+    <!-- === MAIN APP === -->
+    <div class="min-h-screen flex flex-col">
+
+        <!-- Header -->
+        <header class="sticky top-0 z-30 w-full border-b border-[#D23669]/15 bg-white/70 backdrop-blur-md px-3 sm:px-6 py-2 flex items-center justify-between">
+            <div class="flex items-center gap-2">
+                <div class="w-7 h-7 rounded-full bg-[#D23669] flex items-center justify-center text-white shadow-sm shadow-[#D23669]/30">
+                    <i class="fas fa-heart text-xs animate-pulse"></i>
+                </div>
+                <span class="font-romantic header-title font-bold tracking-tight text-[#4A2040]">
+                    Menu ❤️
+                </span>
+            </div>
+
+            <div class="hidden sm:flex flex-col items-center">
+                <span class="text-[8px] uppercase tracking-[0.15em] text-[#D23669] font-sans font-bold">
+                    From Shan ❤️
+                </span>
+                <span class="text-[10px] text-[#4A2040] font-romantic italic font-semibold">
+                    For You, Always ✨
+                </span>
+            </div>
+
+            <div class="flex items-center gap-1.5">
+                <button onclick="playNotification()" title="Playful Notification" class="p-1.5 rounded-full bg-[#D23669]/10 text-[#D23669] hover:bg-[#D23669]/20 transition-colors relative cursor-pointer">
+                    <i class="fas fa-bell text-sm"></i>
+                    <span class="absolute top-0.5 right-0.5 w-1.5 h-1.5 bg-[#D23669] rounded-full animate-ping"></span>
+                    <span class="absolute top-0.5 right-0.5 w-1.5 h-1.5 bg-[#D23669] rounded-full"></span>
+                </button>
+                <button class="secret-heart" id="secretHeartBtn" onclick="playSecretSong()">
+                    <i class="fas fa-heart"></i>
+                </button>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="relative z-10 max-w-6xl w-full mx-auto px-3 sm:px-6 pt-6 pb-12 space-y-10 flex-1">
+
+            <!-- Hero Section -->
+            <section class="text-center pt-2 pb-1">
+                <div class="space-y-3">
+                    <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#D23669]/10 backdrop-blur-md text-[#D23669] text-[10px] sm:text-xs font-bold tracking-widest uppercase border border-[#D23669]/20 shadow-sm animate-glow">
+                        <i class="fas fa-star text-[#D23669] animate-spin-slow text-xs"></i>
+                        <span>From Shan With Love ✨</span>
+                        <i class="fas fa-heart text-[#D23669] text-xs"></i>
+                    </div>
+
+                    <h1 class="font-romantic text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold text-[#4A2040] tracking-tight leading-tight">
+                        To The One Who Stole My Heart, <br />
+                        <span class="bg-gradient-to-r from-[#D23669] via-pink-600 to-[#D23669] bg-clip-text text-transparent font-script text-3xl sm:text-5xl md:text-6xl lg:text-7xl">
+                            Menu ❤️
+                        </span>
+                    </h1>
+
+                    <p class="max-w-2xl mx-auto text-sm sm:text-lg text-[#4A2040]/80 font-romantic italic leading-relaxed px-2">
+                        "Tumhari muskurahat meri duniya ki sabse khoobsurat cheez hai. 💕<br>
+                        Har din tumhe khush dekhna meri sab se badi dua hai."
+                    </p>
+
+                    <div class="pt-4 grid grid-cols-3 max-w-xs sm:max-w-md mx-auto gap-2 sm:gap-3">
+                        <div class="bg-white p-2.5 sm:p-3.5 rounded-2xl border border-[#D23669]/15 shadow-sm">
+                            <span class="text-lg sm:text-2xl font-bold text-[#D23669] font-romantic">∞</span>
+                            <p class="text-[9px] sm:text-[11px] text-[#4A2040]/70 font-medium mt-0.5">Unlimited Love</p>
+                        </div>
+                        <div class="bg-white p-2.5 sm:p-3.5 rounded-2xl border border-[#D23669]/15 shadow-sm">
+                            <span class="text-lg sm:text-2xl font-bold text-[#D23669] font-romantic">100%</span>
+                            <p class="text-[9px] sm:text-[11px] text-[#4A2040]/70 font-medium mt-0.5">Sincerity</p>
+                        </div>
+                        <div class="bg-white p-2.5 sm:p-3.5 rounded-2xl border border-[#D23669]/15 shadow-sm">
+                            <span class="text-lg sm:text-2xl font-bold text-[#D23669] font-romantic flex items-center justify-center">
+                                <i class="fas fa-heart"></i>
+                            </span>
+                            <p class="text-[9px] sm:text-[11px] text-[#4A2040]/70 font-medium mt-0.5">Forever Yours</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Mood Selector -->
+            <section id="moodSection">
+                <h2 class="font-romantic text-xl sm:text-2xl text-center text-[#4A2040] mb-3">
+                    <i class="fas fa-heart text-[#D23669]"></i> How's your heart, my love?
+                </h2>
+                <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-2 sm:gap-3" id="moodContainer"></div>
+            </section>
+
+            <!-- Quote Box -->
+            <div class="quote-box" id="quoteBox" style="background: linear-gradient(135deg, rgba(255,228,235,0.6), rgba(255,240,245,0.6)); border: 1px solid rgba(210,54,105,0.15);">
+                <div class="quote-text" id="quoteText">
+                    <i class="fas fa-quote-left text-[#D23669] mr-1.5"></i>
+                    "Menu, tum meri duniya ki sab se khoobsurat cheez ho. Har subah tumhari yaad se roshan hoti hai, aur har raat tumhare khayal mein guzarti hai."
+                    <i class="fas fa-quote-right text-[#D23669] ml-1.5"></i>
+                </div>
+                <div class="sub-quote" id="quoteSub">Tum mere liye khaas ho, aur hamesha rahogi. ❤️</div>
+                <div class="special-action" id="specialAction">🌹 Sending you all my love &amp; dua's</div>
+            </div>
+
+            <!-- Love Letter -->
+            <section>
+                <h2 class="font-romantic text-xl sm:text-2xl text-center text-[#4A2040] mb-3">
+                    <i class="fas fa-envelope text-[#D23669]"></i> A Letter Just for You
+                </h2>
+                <div class="letter-content" id="loveLetter">
+                    <i class="fas fa-feather text-[#D23669]"></i> Menu, every heartbeat whispers your name. You are the softest chapter in my story, the melody I never want to end. <span class="text-[#D23669] font-semibold">Tum mere ho, aur main tumhara hoon.</span>
+                </div>
+            </section>
+
+            <!-- Memories / Reasons Section -->
+            <section>
+                <h2 class="font-romantic text-xl sm:text-2xl text-center text-[#4A2040] mb-3">
+                    <i class="fas fa-star text-[#D23669]"></i> Why My Heart Chose You
+                </h2>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3" id="memoriesContainer"></div>
+            </section>
+
+            <!-- Proposal Section -->
+            <section>
+                <h2 class="font-romantic text-xl sm:text-2xl text-center text-[#4A2040] mb-3">
+                    <i class="fas fa-ring text-[#D23669]"></i> A Promise From My Heart
+                </h2>
+
+                <div class="persuasion-text animate-float">
+                    <i class="fas fa-heart text-[#D23669] animate-heartbeat"></i>
+                    <br><br>
+                    "Menu, tum mere liye sirf ek naam nahi ho — <span class="highlight">tum meri duniya ho</span>. 
+                    <br><br>
+                    Har din tumhe khush dekhna meri sab se badi chaahat hai. 
+                    Tumhari muskurahat meri <span class="highlight">sab se qeemti daulat</span> hai. 
+                    <br><br>
+                    <span class="highlight">💕 Main hamesha tumhara saath dunga, chahe kuch bhi ho. 💕</span>"
+                    <br><br>
+                    <i class="fas fa-heart text-[#D23669] animate-heartbeat"></i>
+                </div>
+
+                <div class="flex flex-wrap items-center justify-center gap-3 bg-[#fce4ec] rounded-[50px] px-4 py-3 mt-4 border border-[#f8bbd0]">
+                    <span class="font-medium text-[#7f2d4b] text-base sm:text-lg">Will you be mine forever? 🥺</span>
+                    <div class="flex gap-2 flex-wrap justify-center">
+                        <button class="btn-accept" id="acceptBtn">Yes, always ❤️</button>
+                        <button class="btn-not" id="notBtn">Not interested</button>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+
+        <!-- Footer -->
+        <footer class="w-full bg-[#4A2040] text-[#FFF9F5] rounded-t-[32px] pt-8 pb-8 px-4 text-center space-y-4 relative z-10">
+            <div class="inline-flex flex-col items-center gap-2">
+                <button id="loveTapBtn" class="p-3.5 rounded-full bg-[#D23669] hover:bg-[#b02452] text-white shadow-[0_10px_25px_rgba(210,54,105,0.4)] hover:scale-110 active:scale-95 transition-all cursor-pointer">
+                    <i class="fas fa-heart text-xl"></i>
+                </button>
+                <p class="text-xs font-semibold text-[#FFF9F5]/90 tracking-wide font-sans">
+                    Tap to send instant love to Menu! (<span id="loveTapCount">0</span> taps sent 💖)
+                </p>
+            </div>
+
+            <p class="font-script text-2xl sm:text-3xl text-[#FFF9F5] font-bold">
+                Forever &amp; Always by your side, Menu.
+            </p>
+
+            <p class="text-[8px] sm:text-[10px] text-[#FFF9F5]/60 font-sans tracking-[0.2em] uppercase">
+                Made with love by Shan • For You Always 💕
+            </p>
+        </footer>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- JAVASCRIPT -->
+    <!-- ============================================================ -->
+    <script>
+        // ---- DATA ----
+        const MOODS = [{
+            id: 'romantic',
+            label: 'Dil Ki Baat',
+            emoji: '🥺',
+            bgGradient: 'from-rose-100/70 via-pink-50 to-red-50/70',
+            quote: '"Menu, tum meri duniya ki sab se khoobsurat cheez ho. Har subah tumhari yaad se roshan hoti hai, aur har raat tumhare khayal mein guzarti hai."',
+            subQuote: 'Tum mere liye khaas ho, aur hamesha rahogi. ❤️',
+            specialAction: '🌹 Sending you all my love & dua\'s',
+            particles: ['❤️', '💖', '🌹', '💌', '💍', '💘']
+        }, {
+            id: 'happy',
+            label: 'When You Smile',
+            emoji: '🌸',
+            bgGradient: 'from-amber-50/80 via-rose-50/50 to-pink-50/80',
+            quote: '"Jab tum muskurati ho na Menu, meri poori dunya roshan ho jati hai. Tumhari muskurahat meri sab se qeemti cheez hai."',
+            subQuote: 'Keep smiling, it makes my world beautiful! 🌼',
+            specialAction: '✨ Showered with Golden Sunbeams & Confetti',
+            particles: ['✨', '🌸', '💖', '⭐', '🌼', '💫']
+        }, {
+            id: 'queen',
+            label: 'My Queen',
+            emoji: '👑',
+            bgGradient: 'from-fuchsia-50/80 via-pink-50 to-amber-50/70',
+            quote: '"Menu, tum mere liye ek queen ki tarah ho. Main hamesha tumhari izzat karunga aur tumhe khush rakhunga."',
+            subQuote: 'You deserve to be treated like royalty. 👑✨',
+            specialAction: '👑 A Promise of Respect & Love',
+            particles: ['👑', '💎', '✨', '💖', '🔥', '💍']
+        }, {
+            id: 'missing',
+            label: 'Always Missing You',
+            emoji: '💫',
+            bgGradient: 'from-pink-100/80 via-rose-50 to-purple-50/80',
+            quote: '"Subah ki pehli soch se lekar raat ki aakhri dua tak, har lamha sirf tumhara khayal rehta hai Menu."',
+            subQuote: 'You are always in my thoughts and prayers. 💌',
+            specialAction: '🕊️ A Heartfelt Message Carried Straight to You',
+            particles: ['🕊️', '💌', '💭', '💖', '⏳', '✨']
+        }, {
+            id: 'sad',
+            label: 'If You Hesitate',
+            emoji: '🕊️',
+            bgGradient: 'from-sky-50/80 via-rose-50/50 to-pink-50/80',
+            quote: '"Agar kabhi koi mushkil aaye toh yaad rakhna, main hamesha tumhare saath hoon. Koi bhi pareshani ho, main tumhara sahara banna chahta hoon."',
+            subQuote: 'I will always be your support system. 💕',
+            specialAction: '🤝 Always By Your Side',
+            particles: ['🍫', '🫂', '🥺', '💗', '🎀', '✨']
+        }, {
+            id: 'tired',
+            label: 'Promise of Peace',
+            emoji: '🌙',
+            bgGradient: 'from-indigo-50/80 via-purple-50/50 to-pink-50/80',
+            quote: '"Dunya ki bheed aur thakan se door, main tumhara sukoon banna chahta hoon Menu. Jahan tum bilkul safe aur be-had khush mehsoos karo."',
+            subQuote: 'I want to be your peace and comfort. 🌙',
+            specialAction: '🧸 Endless Warmth & Care',
+            particles: ['☁️', '🌙', '⭐', '💤', '🧸', '✨']
+        }];
+
+        const MEMORIES = [{
+            title: 'When My Heart Chose You ✨',
+            caption: 'That unforgettable moment I saw you and realized no one else would ever compare.',
+            sticker: '🌟 Sincere Spark',
+            icon: '💖'
+        }, {
+            title: 'Listening to Every Word 🌙',
+            caption: 'Every time you speak, laugh, or share your thoughts, I just want to listen forever.',
+            sticker: '🌙 Treasured Words',
+            icon: '💭'
+        }, {
+            title: 'Dreaming of Our Future ☕',
+            caption: 'I imagine sharing beautiful moments, warm smiles, and creating memories together.',
+            sticker: '☕ Future Moments',
+            icon: '☕'
+        }, {
+            title: 'Watching Sunset Skies 🌅',
+            caption: 'The sunset is beautiful, but all I can ever think about is how magical life would be with you.',
+            sticker: '🌅 Golden Promise',
+            icon: '🌅'
+        }, {
+            title: 'That Smile That Steals My Heart 😂',
+            caption: 'Your genuine laughter is contagious. Making you smile and laugh every day is my mission.',
+            sticker: '💖 Pure Joy',
+            icon: '😊'
+        }, {
+            title: 'A Lifetime of Love 💍',
+            caption: 'This is not just a passing feeling; it is a lifetime promise, Menu.',
+            sticker: '💍 Lifetime Promise',
+            icon: '💍'
+        }];
+
+        const LOVE_REASONS = [
+            'Tumhari saadgi aur masoomiyat jo mujhe hamesha apni taraf khainchti hai.',
+            'Your kind, gentle heart that cares so sincerely for everyone around you.',
+            'The way your smile lights up even the darkest room in a single second.',
+            'How you inspire me to be the best version of myself.',
+            'Because my heart chose you without asking, and it refuses to look anywhere else.',
+            'I promise to love you with full respect, endless loyalty, and pure honesty forever.'
+        ];
+
+        const letterPool = [
+            'Menu, you are the poem I never knew how to write. 📝 <span class="text-[#D23669] font-semibold">Tum mere dil ki kitab ho.</span>',
+            'In a world full of noise, your voice is my melody. 🎵 <span class="text-[#D23669] font-semibold">Tumhari awaaz meri rooh ko sukoon deti hai.</span>',
+            'Every day with you is a page from a fairy tale. 📖 <span class="text-[#D23669] font-semibold">Tum se milna meri taqdeer thi.</span>',
+            'You are my favourite place to rest my heart. 💖 <span class="text-[#D23669] font-semibold">Mera dil sirf tumhara hai.</span>',
+            'If love was a language, you\'d be my only word. 💬 <span class="text-[#D23669] font-semibold">Tum meri zubaan ho.</span>',
+            'Menu, my heart beats only for you. 💓 <span class="text-[#D23669] font-semibold">Tumhare bina yeh dil bekar hai.</span>'
+        ];
+
+        // ---- DOM REFS ----
+        const quoteText = document.getElementById('quoteText');
+        const quoteSub = document.getElementById('quoteSub');
+        const specialAction = document.getElementById('specialAction');
+        const quoteBox = document.getElementById('quoteBox');
+        const loveLetter = document.getElementById('loveLetter');
+        const notBtn = document.getElementById('notBtn');
+        const acceptBtn = document.getElementById('acceptBtn');
+        const moodContainer = document.getElementById('moodContainer');
+        const memoriesContainer = document.getElementById('memoriesContainer');
+        const loveTapBtn = document.getElementById('loveTapBtn');
+        const loveTapCount = document.getElementById('loveTapCount');
+        const secretHeartBtn = document.getElementById('secretHeartBtn');
+        const giftModal = document.getElementById('giftModal');
+
+        let loveTaps = 0;
+        let currentMood = 'romantic';
+
+        // ---- AUDIO PLAYER ----
+        const audio = document.getElementById('bgMusic');
+        let isMusicPlaying = false;
+        let musicStarted = false;
+
+        function startMusic() {
+            if (musicStarted) return;
+            try {
+                const playPromise = audio.play();
+                if (playPromise !== undefined) {
+                    playPromise.then(() => {
+                        isMusicPlaying = true;
+                        musicStarted = true;
+                        document.getElementById('musicIcon').className = 'fas fa-volume-up';
+                        document.getElementById('musicStatus').textContent = 'Playing ♪';
+                        console.log('🎵 Background music started!');
+                    }).catch((error) => {
+                        console.log('Music autoplay blocked, waiting for user interaction...');
+                        setTimeout(startMusic, 1000);
+                    });
+                }
+            } catch (e) {
+                console.log('Music error:', e);
+                setTimeout(startMusic, 1000);
+            }
+        }
+
+        document.addEventListener('click', function firstClick() {
+            startMusic();
+            document.removeEventListener('click', firstClick);
+        }, { once: true });
+
+        // ---- AUDIO ENGINE ----
+        const AudioCtx = window.AudioContext || window.webkitAudioContext;
+        let audioCtx = null;
+
+        function getAudioContext() {
+            if (!audioCtx) {
+                audioCtx = new AudioCtx();
+            }
+            return audioCtx;
+        }
+
+        function playTone(freq, duration = 0.1, volume = 0.06) {
+            try {
+                const ctx = getAudioContext();
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+                osc.frequency.value = freq;
+                gain.gain.value = volume;
+                osc.start();
+                osc.stop(ctx.currentTime + duration);
+            } catch (_) {}
+        }
+
+        function playNotification() {
+            playTone(660, 0.08);
+            setTimeout(() => playTone(880, 0.09), 120);
+        }
+
+        function playHappySound() {
+            [523, 659, 784, 988, 1175].forEach((freq, i) => {
+                setTimeout(() => playTone(freq, 0.12), i * 100);
+            });
+        }
+
+        function playSecretSong() {
+            const notes = [523, 587, 659, 784, 880, 784, 659, 587, 659, 784, 880];
+            notes.forEach((freq, i) => {
+                setTimeout(() => playTone(freq, 0.1, 0.05), i * 120);
+            });
+            secretHeartBtn.classList.add('pulse');
+            setTimeout(() => secretHeartBtn.classList.remove('pulse'), 700);
+        }
+
+        function playMoodPop(freq) {
+            playTone(freq, 0.08, 0.05);
+        }
+
+        // ---- FLOATING HEARTS ----
+        function createFloatingHeart(emoji = null) {
+            const container = document.getElementById('hearts-container');
+            const heart = document.createElement('div');
+            heart.className = 'floating-heart';
+            const emojis = ['❤️', '💖', '💕', '✨', '🌸', '🌺', '💗', '💓', '💘', '🌹', '💌', '💍'];
+            heart.textContent = emoji || emojis[Math.floor(Math.random() * emojis.length)];
+            heart.style.left = Math.random() * 90 + '%';
+            heart.style.fontSize = (0.8 + Math.random() * 1.2) + 'rem';
+            heart.style.animationDuration = (8 + Math.random() * 12) + 's';
+            heart.style.animationDelay = (Math.random() * 2) + 's';
+            container.appendChild(heart);
+            setTimeout(() => heart.remove(), 20000);
+        }
+
+        setInterval(createFloatingHeart, 800);
+        for (let i = 0; i < 6; i++) setTimeout(createFloatingHeart, i * 200);
+
+        function spawnManyHearts(count = 8, emojis = null) {
+            const list = emojis || ['❤️', '💖', '💕', '✨'];
+            for (let i = 0; i < count; i++) {
+                setTimeout(() => createFloatingHeart(list[i % list.length]), i * 100);
+            }
+        }
+
+        // ---- WELCOME MODAL ----
+        function closeWelcome() {
+            document.getElementById('welcomeModal').classList.add('hidden');
+            playNotification();
+            setTimeout(() => playNotification(), 300);
+            spawnManyHearts(5);
+            startMusic();
+        }
+
+        // ---- GIFT MODAL ----
+        function showGiftModal() {
+            giftModal.classList.add('show');
+            const allEmojis = ['❤️', '💖', '💕', '💗', '💓', '🌹', '🌷', '🌸', '🌺', '✨', '💫', '🎁', '💝', '💘'];
+            for (let i = 0; i < 30; i++) {
+                setTimeout(() => {
+                    createFloatingHeart(allEmojis[i % allEmojis.length]);
+                }, i * 80);
+            }
+            playHappySound();
+        }
+
+        function closeGiftModal() {
+            giftModal.classList.remove('show');
+        }
+
+        // ---- MOOD HANDLER ----
+        function setMood(moodId) {
+            const mood = MOODS.find(m => m.id === moodId);
+            if (!mood) return;
+
+            currentMood = moodId;
+            quoteText.innerHTML =
+                `<i class="fas fa-quote-left text-[#D23669] mr-1.5"></i> ${mood.quote} <i class="fas fa-quote-right text-[#D23669] ml-1.5"></i>`;
+            quoteSub.textContent = mood.subQuote;
+            specialAction.textContent = mood.specialAction;
+
+            quoteBox.style.background = `linear-gradient(135deg, ${mood.bgGradient})`;
+
+            quoteBox.classList.remove('animate');
+            void quoteBox.offsetWidth;
+            quoteBox.classList.add('animate');
+
+            document.querySelectorAll('.mood-card').forEach(card => {
+                card.classList.toggle('active', card.dataset.mood === moodId);
+            });
+
+            if (mood.particles) {
+                spawnManyHearts(6, mood.particles);
+            }
+
+            playMoodPop(650 + Math.random() * 100);
+            if (navigator.vibrate) navigator.vibrate(6);
+            resetNotBtn();
+        }
+
+        // ---- RENDER MOODS ----
+        function renderMoods() {
+            moodContainer.innerHTML = '';
+            MOODS.forEach(mood => {
+                const card = document.createElement('div');
+                card.className = `mood-card ${mood.id === 'romantic' ? 'active' : ''}`;
+                card.dataset.mood = mood.id;
+                card.style.background = `linear-gradient(135deg, ${mood.bgGradient})`;
+                card.innerHTML = `
+                    <div class="flex items-center gap-2">
+                        <span class="mood-emoji">${mood.emoji}</span>
+                        <div>
+                            <div class="mood-label">${mood.label}</div>
+                            <span class="text-[8px] sm:text-[10px] text-[#D23669]/70 font-medium">${mood.specialAction.substring(0, 25)}...</span>
+                        </div>
+                    </div>
+                `;
+                card.addEventListener('click', function() {
+                    setMood(this.dataset.mood);
+                });
+                moodContainer.appendChild(card);
+            });
+        }
+
+        // ---- RENDER MEMORIES ----
+        function renderMemories() {
+            memoriesContainer.innerHTML = '';
+            const items = [];
+            const maxItems = Math.max(MEMORIES.length, LOVE_REASONS.length);
+            for (let i = 0; i < maxItems; i++) {
+                if (i < MEMORIES.length) {
+                    items.push({ type: 'memory', data: MEMORIES[i] });
+                }
+                if (i < LOVE_REASONS.length) {
+                    items.push({ type: 'reason', data: LOVE_REASONS[i] });
+                }
+            }
+
+            items.forEach((item, index) => {
+                if (item.type === 'memory') {
+                    const mem = item.data;
+                    const div = document.createElement('div');
+                    div.className = 'memory-card animate-fade-up';
+                    div.style.animationDelay = (index * 0.05) + 's';
+                    div.innerHTML = `
+                        <span class="memory-icon">${mem.icon || '💖'}</span>
+                        <div class="memory-title">${mem.title}</div>
+                        <div class="memory-caption">${mem.caption}</div>
+                        <div style="display:flex; justify-content:space-between; align-items:center; margin-top:4px;">
+                            <span class="memory-sticker">${mem.sticker}</span>
+                        </div>
+                    `;
+                    div.addEventListener('click', function() {
+                        spawnManyHearts(4, ['💖', '✨', '💕']);
+                        playTone(600 + Math.random() * 200, 0.06, 0.04);
+                        this.style.transform = 'scale(0.97)';
+                        setTimeout(() => { this.style.transform = ''; }, 200);
+                    });
+                    memoriesContainer.appendChild(div);
+                } else {
+                    const reason = item.data;
+                    const div = document.createElement('div');
+                    div.className = 'memory-card animate-fade-up';
+                    div.style.animationDelay = (index * 0.05) + 's';
+                    div.innerHTML = `
+                        <div class="reason-item">
+                            <span class="reason-icon"><i class="fas fa-heart"></i></span>
+                            <span class="reason-text">${reason}</span>
+                        </div>
+                    `;
+                    div.addEventListener('click', function() {
+                        spawnManyHearts(3, ['❤️', '💕']);
+                        playTone(500 + Math.random() * 200, 0.05, 0.04);
+                    });
+                    memoriesContainer.appendChild(div);
+                }
+            });
+        }
+
+        // ---- REFRESH LETTER ----
+        function refreshLetter() {
+            const idx = Math.floor(Math.random() * letterPool.length);
+            loveLetter.innerHTML = `<i class="fas fa-feather text-[#D23669]"></i> ${letterPool[idx]}`;
+        }
+
+        // ---- FLEE BUTTON ----
+        function fleeButton() {
+            const container = document.querySelector('.flex.flex-wrap.items-center.justify-center.gap-3');
+            if (!container) return;
+            const rect = container.getBoundingClientRect();
+            const btnRect = notBtn.getBoundingClientRect();
+            const maxX = rect.width - btnRect.width - 16;
+            const maxY = rect.height - btnRect.height - 16;
+            const x = Math.max(0, Math.random() * maxX);
+            const y = Math.max(0, Math.random() * maxY);
+            notBtn.style.transform = `translate(${x - 8}px, ${y - 8}px)`;
+            notBtn.style.transition = '0.08s linear';
+            notBtn.innerHTML = '🙈 nope';
+            setTimeout(() => { notBtn.innerHTML = 'Not interested'; }, 400);
+            playTone(440, 0.06, 0.04);
+        }
+
+        function resetNotBtn() {
+            notBtn.style.transform = 'translate(0, 0)';
+        }
+
+        // ---- MUSIC TOGGLE ----
+        function toggleMusic() {
+            const icon = document.getElementById('musicIcon');
+            const status = document.getElementById('musicStatus');
+
+            if (isMusicPlaying) {
+                audio.pause();
+                isMusicPlaying = false;
+                icon.className = 'fas fa-volume-mute';
+                status.textContent = 'Paused';
+            } else {
+                audio.play();
+                isMusicPlaying = true;
+                icon.className = 'fas fa-volume-up';
+                status.textContent = 'Playing ♪';
+            }
+        }
+
+        // ---- EVENT BINDINGS ----
+        acceptBtn.addEventListener('click', function() {
+            quoteText.innerHTML =
+                `<i class="fas fa-quote-left text-[#D23669] mr-1.5"></i> You said YES! My heart is overflowing with joy. 💕 <span class="text-[#D23669] font-semibold">Tum ne haan kaha, meri duniya bas gayi.</span> <i class="fas fa-quote-right text-[#D23669] ml-1.5"></i>`;
+            quoteSub.textContent = '~ forever yours, Menu';
+            specialAction.textContent = '💍 A Lifetime of Love & Happiness Begins Today!';
+            quoteBox.classList.remove('animate');
+            void quoteBox.offsetWidth;
+            quoteBox.classList.add('animate');
+            loveLetter.innerHTML =
+                `<i class="fas fa-feather text-[#D23669]"></i> And so it begins... our forever. 💕 <span class="text-[#D23669] font-semibold">Yeh shuruaat hai humari kahani ki, jo kabhi khatam nahi hogi.</span>`;
+
+            showGiftModal();
+            resetNotBtn();
+        });
+
+        notBtn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            fleeButton();
+        });
+
+        document.addEventListener('click', function(e) {
+            if (!e.target.closest('.btn-not')) {
+                resetNotBtn();
+            }
+        });
+
+        loveTapBtn.addEventListener('click', function() {
+            loveTaps++;
+            loveTapCount.textContent = loveTaps;
+            playTone(650 + (loveTaps % 5) * 50, 0.08, 0.05);
+            createFloatingHeart('❤️');
+            if (loveTaps % 5 === 0) spawnManyHearts(4);
+        });
+
+        giftModal.addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeGiftModal();
+            }
+        });
+
+        // ---- INIT ----
+        renderMoods();
+        renderMemories();
+        setMood('romantic');
+        refreshLetter();
+
+        setTimeout(() => {
+            playNotification();
+            setTimeout(playNotification, 300);
+        }, 600);
+
+        setTimeout(() => spawnManyHearts(6), 400);
+
+        console.log('💖 Menu · made with love by Shan');
+        console.log('🎵 Background music will play automatically!');
+        console.log('📁 Make sure song.mp3 is in the same folder');
+    </script>
+
+</body>
+</html>
